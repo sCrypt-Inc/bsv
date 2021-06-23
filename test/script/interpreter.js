@@ -194,7 +194,7 @@ describe('Interpreter', function () {
         console.log(altstack)
         // these values will get overwritten each step but we only care about that final values
         stk = (stack === si.stack)
-        stkval = (stack[0] === si.stack[0])
+        stkval = (stack.stacktop(-stack.length) === si.stack.stacktop(-si.stack.length))
         altstk = (altstack === si.altstack)
         altstkval = (altstack[0] === si.altstack[0])
       }
@@ -312,7 +312,8 @@ describe('Interpreter', function () {
       script: new Script(),
       satoshis: inputAmount
     }))
-
+    Interpreter.MAX_OPCODE_COUNT = 201
+    Interpreter.MAX_SCRIPT_SIZE = 10000
     var interp = new Interpreter()
     var verified = interp.verify(scriptSig, scriptPubkey, spendtx, 0, flags, new BN(inputAmount))
     verified.should.equal(expected, interp.errstr)
