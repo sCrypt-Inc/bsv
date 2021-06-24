@@ -196,7 +196,7 @@ describe('Interpreter', function () {
         stk = (stack === si.stack)
         stkval = (stack.stacktop(-stack.length) === si.stack.stacktop(-si.stack.length))
         altstk = (altstack === si.altstack)
-        altstkval = (altstack[0] === si.altstack[0])
+        altstkval = (altstack.stacktop(-altstack.length) === si.altstack.stacktop(-si.altstack.length))
       }
       // alt stack is not copied to second script execution so just do everything in second script
       si.verify(Script(''), Script('OP_2 OP_TOALTSTACK OP_1'))
