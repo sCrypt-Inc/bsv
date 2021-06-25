@@ -194,9 +194,9 @@ describe('Interpreter', function () {
         console.log(altstack)
         // these values will get overwritten each step but we only care about that final values
         stk = (stack === si.stack)
-        stkval = (stack.stacktop(-stack.length) === si.stack.stacktop(-si.stack.length))
+        stkval = (stack[0] === si.stack.stacktop(-si.stack.length))
         altstk = (altstack === si.altstack)
-        altstkval = (altstack.stacktop(-altstack.length) === si.altstack.stacktop(-si.altstack.length))
+        altstkval = (altstack[0] === si.altstack.stacktop(-si.altstack.length))
       }
       // alt stack is not copied to second script execution so just do everything in second script
       si.verify(Script(''), Script('OP_2 OP_TOALTSTACK OP_1'))
