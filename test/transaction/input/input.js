@@ -2,10 +2,8 @@
 
 var should = require('chai').should()
 var expect = require('chai').expect
-var _ = require('../../../lib/util/_')
 
 var bsv = require('../../..')
-var errors = bsv.errors
 var PrivateKey = bsv.PrivateKey
 var Address = bsv.Address
 var Script = bsv.Script
