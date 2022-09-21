@@ -282,8 +282,8 @@ describe('Transaction', function () {
         .addSafeData('genesis is coming')
         .change(changeAddress)
         .sign(privateKey)
-
-      transaction.serialize().should.equal('01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006b4830450221009342991af752bf19493c3fad4fc7cf42a536b665d2c72ccd5ffccd5074cff8ae022012494eba7f401e91fe365403f65afd4226acc53dd46f9680244562433b6ea4a941210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff02000000000000000014006a1167656e6573697320697320636f6d696e6731860100000000001976a914073b7eae2823efa349e3b9155b8a735526463a0f88ac00000000')
+      // update if change default FEE_PER_KB
+      transaction.serialize().should.equal('01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006b483045022100c2de1b500fd06d9c9db1139e1d6e718e03889eade84fe905ab3b711d376d2dad02203643918efa39299f6df57bd3ae2d0925183de5ef651783dcf97752d2533387a841210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff02000000000000000014006a1167656e6573697320697320636f6d696e6794860100000000001976a914073b7eae2823efa349e3b9155b8a735526463a0f88ac00000000')
     })
 
     describe('isFullySigned', function () {
@@ -757,8 +757,8 @@ describe('Transaction', function () {
     })
     it('will add an empty script if not supplied', function () {
       transaction = new Transaction()
-      var outputScriptString = 'OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39' +
-        'cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de23' +
+      var outputScriptString = 'OP_2 33 0x038282263212c609d9ea2a6e3e172de238d8c39' +
+        'cabd5ac1ca10646e23fd5f51508 33 0x038282263212c609d9ea2a6e3e172de23' +
         '8d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG OP_EQUAL'
       transaction.addInput(new Transaction.Input({
         prevTxId: '0000000000000000000000000000000000000000000000000000000000000000',
@@ -1079,10 +1079,10 @@ describe('Transaction', function () {
       var tx = new Transaction()
         .addOutput(new Transaction.Output({
           script: new Script().add(Opcode(0)),
-          satoshis: 2
+          satoshis: 3
         }))
         .addOutput(new Transaction.Output({
-          script: new Script().add(Opcode(1)),
+          script: new Script().add(Opcode(1)).add(1),
           satoshis: 2
         }))
         .addOutput(new Transaction.Output({
@@ -1092,10 +1092,10 @@ describe('Transaction', function () {
       tx.sort()
       tx.outputs[0].satoshis.should.equal(1)
       tx.outputs[1].satoshis.should.equal(2)
-      tx.outputs[2].satoshis.should.equal(2)
+      tx.outputs[2].satoshis.should.equal(3)
       tx.outputs[0].script.toString().should.equal('OP_0')
-      tx.outputs[1].script.toString().should.equal('OP_0')
-      tx.outputs[2].script.toString().should.equal('0x01')
+      tx.outputs[1].script.toString().should.equal('1 0x01')
+      tx.outputs[2].script.toString().should.equal('OP_0')
     })
 
     describe('bitcoinjs fixtures', function () {

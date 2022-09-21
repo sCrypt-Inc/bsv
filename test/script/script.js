@@ -39,8 +39,14 @@ describe('Script', function () {
     })
 
     it('set chunks', function () {
-      script.set({ chunks: [1] })
-      expect(script.chunks).to.deep.equal([1])
+      script.set({ chunks: [{
+        len: 0,
+        opcodenum: 0
+      }] })
+      expect(script.chunks).to.deep.equal([{
+        len: 0,
+        opcodenum: 0
+      }])
     })
   })
 
@@ -436,11 +442,11 @@ describe('Script', function () {
     })
 
     it('should identify this known pubkeyhashin (compressed pubkey w/ 0x02)', function () {
-      Script('73 0x3046022100bb3c194a30e460d81d34be0a230179c043a656f67e3c5c8bf47eceae7c4042ee0221008bf54ca11b2985285be0fd7a212873d243e6e73f5fad57e8eb14c4f39728b8c601 21 0x02aec6b86621e7fef63747fbfd6a6e7d54c8e1052044ef2dd2c5e46656ef1194d4').isPublicKeyHashIn().should.equal(true)
+      Script('73 0x3046022100bb3c194a30e460d81d34be0a230179c043a656f67e3c5c8bf47eceae7c4042ee0221008bf54ca11b2985285be0fd7a212873d243e6e73f5fad57e8eb14c4f39728b8c601 33 0x02aec6b86621e7fef63747fbfd6a6e7d54c8e1052044ef2dd2c5e46656ef1194d4').isPublicKeyHashIn().should.equal(true)
     })
 
     it('should identify this known pubkeyhashin (compressed pubkey w/ 0x03)', function () {
-      Script('73 0x3046022100bb3c194a30e460d81d34be0a230179c043a656f67e3c5c8bf47eceae7c4042ee0221008bf54ca11b2985285be0fd7a212873d243e6e73f5fad57e8eb14c4f39728b8c601 21 0x03e724d93c4fda5f1236c525de7ffac6c5f1f72b0f5cdd1fc4b4f5642b6d055fcc').isPublicKeyHashIn().should.equal(true)
+      Script('73 0x3046022100bb3c194a30e460d81d34be0a230179c043a656f67e3c5c8bf47eceae7c4042ee0221008bf54ca11b2985285be0fd7a212873d243e6e73f5fad57e8eb14c4f39728b8c601 33 0x03e724d93c4fda5f1236c525de7ffac6c5f1f72b0f5cdd1fc4b4f5642b6d055fcc').isPublicKeyHashIn().should.equal(true)
     })
 
     it('should identify this known non-pubkeyhashin (bad ops length)', function () {
@@ -484,17 +490,17 @@ describe('Script', function () {
 
   describe('#isMultisigOut', function () {
     it('should identify known multisig out 1', function () {
-      Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
+      Script('OP_2 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
     })
     it('should identify known multisig out 2', function () {
-      Script('OP_1 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
+      Script('OP_1 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
     })
     it('should identify known multisig out 3', function () {
-      Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x03363d90d447b00c9c99ceac05b6262ee053441c7e55552ffe526bad8f83ff4640 OP_3 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
+      Script('OP_2 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x03363d90d447b00c9c99ceac05b6262ee053441c7e55552ffe526bad8f83ff4640 OP_3 OP_CHECKMULTISIG').isMultisigOut().should.equal(true)
     })
 
     it('should identify non-multisig out 1', function () {
-      Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG OP_EQUAL').isMultisigOut().should.equal(false)
+      Script('OP_2 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG OP_EQUAL').isMultisigOut().should.equal(false)
     })
     it('should identify non-multisig out 2', function () {
       Script('OP_2').isMultisigOut().should.equal(false)
@@ -525,11 +531,11 @@ describe('Script', function () {
     })
 
     it('should identify this known non-scripthashin', function () {
-      Script('20 0000000000000000000000000000000000000000 OP_CHECKSIG').isScriptHashIn().should.equal(false)
+      Script('20 0x0000000000000000000000000000000000000000 OP_CHECKSIG').isScriptHashIn().should.equal(false)
     })
 
     it('should identify this problematic non-scripthashin scripts', function () {
-      var s = new Script('71 0x3044022017053dad84aa06213749df50a03330cfd24d6' +
+      var s = new Script('0x47 0x3044022017053dad84aa06213749df50a03330cfd24d6' +
         'b8e7ddbb6de66c03697b78a752a022053bc0faca8b4049fb3944a05fcf7c93b2861' +
         '734d39a89b73108f605f70f5ed3401 33 0x0225386e988b84248dc9c30f784b06e' +
         '02fdec57bbdbd443768eb5744a75ce44a4c')
@@ -577,7 +583,7 @@ describe('Script', function () {
       Script('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG').classifyInput().should.equal(Script.types.UNKNOWN)
     })
     it('should classify public key hash in', function () {
-      Script('47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df').classifyInput().should.equal(Script.types.PUBKEYHASH_IN)
+      Script('0x47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 0x21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df').classifyInput().should.equal(Script.types.PUBKEYHASH_IN)
     })
     it('shouldn\'t classify script hash out', function () {
       Script('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL').classifyInput().should.equal(Script.types.UNKNOWN)
@@ -586,7 +592,7 @@ describe('Script', function () {
       Script('OP_0 73 0x30460221008ca148504190c10eea7f5f9c283c719a37be58c3ad617928011a1bb9570901d2022100ced371a23e86af6f55ff4ce705c57d2721a09c4d192ca39d82c4239825f75a9801 72 0x30450220357011fd3b3ad2b8f2f2d01e05dc6108b51d2a245b4ef40c112d6004596f0475022100a8208c93a39e0c366b983f9a80bfaf89237fcd64ca543568badd2d18ee2e1d7501 OP_PUSHDATA1 105 0x5221024c02dff2f0b8263a562a69ec875b2c95ffad860f428acf2f9e8c6492bd067d362103546324a1351a6b601c623b463e33b6103ca444707d5b278ece1692f1aa7724a42103b1ad3b328429450069cc3f9fa80d537ee66ba1120e93f3f185a5bf686fb51e0a53ae').classifyInput().should.equal(Script.types.SCRIPTHASH_IN)
     })
     it('shouldn\'t classify MULTISIG out', function () {
-      Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').classifyInput().should.equal(Script.types.UNKNOWN)
+      Script('OP_2 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').classifyInput().should.equal(Script.types.UNKNOWN)
     })
     it('should classify MULTISIG in', function () {
       Script('OP_0 0x47 0x3044022002a27769ee33db258bdf7a3792e7da4143ec4001b551f73e6a190b8d1bde449d02206742c56ccd94a7a2e16ca52fc1ae4a0aa122b0014a867a80de104f9cb18e472c01').classifyInput().should.equal(Script.types.MULTISIG_IN)
@@ -595,10 +601,10 @@ describe('Script', function () {
       Script('OP_RETURN 1 0x01').classifyInput().should.equal(Script.types.UNKNOWN)
     })
     it('shouldn\'t classify public key out', function () {
-      Script('41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG').classifyInput().should.equal(Script.types.UNKNOWN)
+      Script('0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG').classifyInput().should.equal(Script.types.UNKNOWN)
     })
     it('should classify public key in', function () {
-      Script('47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501').classifyInput().should.equal(Script.types.PUBKEY_IN)
+      Script('0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501').classifyInput().should.equal(Script.types.PUBKEY_IN)
     })
     it('should classify unknown', function () {
       Script('OP_TRUE OP_FALSE').classifyInput().should.equal(Script.types.UNKNOWN)
@@ -613,7 +619,7 @@ describe('Script', function () {
       Script('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG').classifyOutput().should.equal(Script.types.PUBKEYHASH_OUT)
     })
     it('shouldn\'t classify public key hash in', function () {
-      Script('47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df').classifyOutput().should.equal(Script.types.UNKNOWN)
+      Script('0x47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 0x21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df').classifyOutput().should.equal(Script.types.UNKNOWN)
     })
     it('should classify script hash out', function () {
       Script('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL').classifyOutput().should.equal(Script.types.SCRIPTHASH_OUT)
@@ -622,7 +628,7 @@ describe('Script', function () {
       Script('OP_0 73 0x30460221008ca148504190c10eea7f5f9c283c719a37be58c3ad617928011a1bb9570901d2022100ced371a23e86af6f55ff4ce705c57d2721a09c4d192ca39d82c4239825f75a9801 72 0x30450220357011fd3b3ad2b8f2f2d01e05dc6108b51d2a245b4ef40c112d6004596f0475022100a8208c93a39e0c366b983f9a80bfaf89237fcd64ca543568badd2d18ee2e1d7501 OP_PUSHDATA1 105 0x5221024c02dff2f0b8263a562a69ec875b2c95ffad860f428acf2f9e8c6492bd067d362103546324a1351a6b601c623b463e33b6103ca444707d5b278ece1692f1aa7724a42103b1ad3b328429450069cc3f9fa80d537ee66ba1120e93f3f185a5bf686fb51e0a53ae').classifyOutput().should.equal(Script.types.UNKNOWN)
     })
     it('should classify MULTISIG out', function () {
-      Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').classifyOutput().should.equal(Script.types.MULTISIG_OUT)
+      Script('OP_2 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').classifyOutput().should.equal(Script.types.MULTISIG_OUT)
     })
     it('shouldn\'t classify MULTISIG in', function () {
       Script('OP_0 0x47 0x3044022002a27769ee33db258bdf7a3792e7da4143ec4001b551f73e6a190b8d1bde449d02206742c56ccd94a7a2e16ca52fc1ae4a0aa122b0014a867a80de104f9cb18e472c01').classifyOutput().should.equal(Script.types.UNKNOWN)
@@ -631,10 +637,10 @@ describe('Script', function () {
       Script('OP_RETURN 1 0x01').classifyOutput().should.equal(Script.types.DATA_OUT)
     })
     it('should classify public key out', function () {
-      Script('41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG').classifyOutput().should.equal(Script.types.PUBKEY_OUT)
+      Script('0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG').classifyOutput().should.equal(Script.types.PUBKEY_OUT)
     })
     it('shouldn\'t classify public key in', function () {
-      Script('47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501').classifyOutput().should.equal(Script.types.UNKNOWN)
+      Script('0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501').classifyOutput().should.equal(Script.types.UNKNOWN)
     })
     it('should classify unknown', function () {
       Script('OP_TRUE OP_FALSE').classifyOutput().should.equal(Script.types.UNKNOWN)
@@ -649,7 +655,7 @@ describe('Script', function () {
       Script('OP_DUP OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUALVERIFY OP_CHECKSIG').classify().should.equal(Script.types.PUBKEYHASH_OUT)
     })
     it('should classify public key hash in', function () {
-      Script('47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df').classify().should.equal(Script.types.PUBKEYHASH_IN)
+      Script('0x47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 0x21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df').classify().should.equal(Script.types.PUBKEYHASH_IN)
     })
     it('should classify script hash out', function () {
       Script('OP_HASH160 20 0x0000000000000000000000000000000000000000 OP_EQUAL').classify().should.equal(Script.types.SCRIPTHASH_OUT)
@@ -658,7 +664,7 @@ describe('Script', function () {
       Script('OP_0 73 0x30460221008ca148504190c10eea7f5f9c283c719a37be58c3ad617928011a1bb9570901d2022100ced371a23e86af6f55ff4ce705c57d2721a09c4d192ca39d82c4239825f75a9801 72 0x30450220357011fd3b3ad2b8f2f2d01e05dc6108b51d2a245b4ef40c112d6004596f0475022100a8208c93a39e0c366b983f9a80bfaf89237fcd64ca543568badd2d18ee2e1d7501 OP_PUSHDATA1 105 0x5221024c02dff2f0b8263a562a69ec875b2c95ffad860f428acf2f9e8c6492bd067d362103546324a1351a6b601c623b463e33b6103ca444707d5b278ece1692f1aa7724a42103b1ad3b328429450069cc3f9fa80d537ee66ba1120e93f3f185a5bf686fb51e0a53ae').classify().should.equal(Script.types.SCRIPTHASH_IN)
     })
     it('should classify MULTISIG out', function () {
-      Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').classify().should.equal(Script.types.MULTISIG_OUT)
+      Script('OP_2 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 0x21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG').classify().should.equal(Script.types.MULTISIG_OUT)
     })
     it('should classify MULTISIG in', function () {
       Script('OP_0 0x47 0x3044022002a27769ee33db258bdf7a3792e7da4143ec4001b551f73e6a190b8d1bde449d02206742c56ccd94a7a2e16ca52fc1ae4a0aa122b0014a867a80de104f9cb18e472c01').classify().should.equal(Script.types.MULTISIG_IN)
@@ -667,10 +673,10 @@ describe('Script', function () {
       Script('OP_RETURN 1 0x01').classify().should.equal(Script.types.DATA_OUT)
     })
     it('should classify public key out', function () {
-      Script('41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG').classify().should.equal(Script.types.PUBKEY_OUT)
+      Script('0x41 0x0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8 OP_CHECKSIG').classify().should.equal(Script.types.PUBKEY_OUT)
     })
     it('should classify public key in', function () {
-      Script('47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501').classify().should.equal(Script.types.PUBKEY_IN)
+      Script('0x47 0x3044022007415aa37ce7eaa6146001ac8bdefca0ddcba0e37c5dc08c4ac99392124ebac802207d382307fd53f65778b07b9c63b6e196edeadf0be719130c5db21ff1e700d67501').classify().should.equal(Script.types.PUBKEY_IN)
     })
     it('should classify unknown', function () {
       Script('OP_TRUE OP_FALSE').classify().should.equal(Script.types.UNKNOWN)
@@ -692,7 +698,7 @@ describe('Script', function () {
       s.classify().should.equal(Script.types.UNKNOWN)
     })
     it('should classify unknown eventhough it is public key hash in when marked as output', function () {
-      var s = Script('47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 21 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df')
+      var s = Script('0x47 0x3044022077a8d81e656c4a1c1721e68ce35fa0b27f13c342998e75854858c12396a15ffa02206378a8c6959283c008c87a14a9c0ada5cf3934ac5ee29f1fef9cac6969783e9801 33 0x03993c230da7dabb956292851ae755f971c50532efc095a16bee07f83ab9d262df')
       s.classify().should.equal(Script.types.PUBKEYHASH_IN)
       s._isOutput = true // this is normally set by when Script is initiated as part if Input or Output objects
       s.classify().should.equal(Script.types.UNKNOWN)
@@ -701,8 +707,8 @@ describe('Script', function () {
 
   describe('#add and #prepend', function () {
     it('should add these ops', function () {
-      Script().add(1).add(10).add(186).toString().should.equal('0x01 0x0a 0xba')
-      Script().add(1000).toString().should.equal('0x03e8')
+      Script().add(1).add(10).add(186).toString().should.equal('1 0x0a 0xba')
+      Script().add(Buffer.from('03e8', 'hex')).toString().should.equal('2 0x03e8')
       Script().add('OP_CHECKMULTISIG').toString().should.equal('OP_CHECKMULTISIG')
       Script().add('OP_1').add('OP_2').toString().should.equal('OP_1 OP_2')
       Script().add(Opcode.OP_CHECKMULTISIG).toString().should.equal('OP_CHECKMULTISIG')
@@ -743,7 +749,7 @@ describe('Script', function () {
     })
 
     it('should work for no data OP_RETURN', function () {
-      Script().add(Opcode.OP_RETURN).add(Buffer.from('')).toString().should.equal('OP_RETURN')
+      Script().add(Opcode.OP_RETURN).add(Buffer.from('')).toString().should.equal('OP_RETURN OP_0')
     })
     it('works with objects', function () {
       Script().add({
@@ -751,8 +757,8 @@ describe('Script', function () {
       }).toString().should.equal('OP_RETURN')
     })
     it('works with another script', function () {
-      var someScript = Script('OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 ' +
-        '21 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG')
+      var someScript = Script('OP_2 33 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 ' +
+        '33 0x038282263212c609d9ea2a6e3e172de238d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG')
       var s = new Script().add(someScript)
       s.toString()
         .should.equal(someScript.toString())
@@ -862,7 +868,7 @@ describe('Script', function () {
       var data = Buffer.from('')
       var s = Script.buildDataOut(data)
       should.exist(s)
-      s.toString().should.equal('OP_RETURN')
+      s.toString().should.equal('OP_RETURN OP_0')
       s.isDataOut().should.equal(true)
     })
     it('should create script from some data', function () {
@@ -942,7 +948,7 @@ describe('Script', function () {
       var data = Buffer.from('')
       var s = Script.buildSafeDataOut(data)
       should.exist(s)
-      s.toString().should.equal('OP_0 OP_RETURN')
+      s.toString().should.equal('OP_0 OP_RETURN OP_0')
       s.isSafeDataOut().should.equal(true)
     })
     it('should create script from some data', function () {
@@ -1066,12 +1072,9 @@ describe('Script', function () {
 
   describe('#checkMinimalPush', function () {
     it('should check these minimal pushes', function () {
-      Script().add(1).checkMinimalPush(0).should.equal(true)
+      Script().add(1).checkMinimalPush(0).should.equal(false)
       Script().add(0).checkMinimalPush(0).should.equal(true)
       Script().add(-1).checkMinimalPush(0).should.equal(true)
-      Script().add(1000).checkMinimalPush(0).should.equal(true)
-      Script().add(0xffffffff).checkMinimalPush(0).should.equal(true)
-      Script().add(0xffffffffffffffff).checkMinimalPush(0).should.equal(true)
       Script().add(Buffer.from([0])).checkMinimalPush(0).should.equal(true)
 
       var buf = Buffer.alloc(75)
@@ -1169,7 +1172,7 @@ describe('Script', function () {
       var script = new Script('72 0x3045022100eff96230ca0f55b1e8c7a63e014f48611ff1af40875ecd33dee9062d7a6f5e2002206320405b5f6992c756e03e66b21a05a812b60996464ac6af815c2638b930dd7a01 65 0x04150defa035a2c7d826d7d5fc8ab2154bd1bb832f1a5c8ecb338f436362ad232e428b57db44677c5a8bd42c5ed9e2d7e04e742c59bee1b40080cfd57dec64b23a')
       script.toAddress().toString().should.equal('1KK9oz4bFH8c1t6LmighHaoSEGx3P3FEmc')
       // taken from tx 7f8f95752a59d715dae9e0008a42e7968d2736741591bbfc6685f6e1649c21ed
-      var s2 = new Script('71 0x3044022017053dad84aa06213749df50a03330cfd24d6b8e7ddbb6de66c03697b78a752a022053bc0faca8b4049fb3944a05fcf7c93b2861734d39a89b73108f605f70f5ed3401 33 0x0225386e988b84248dc9c30f784b06e02fdec57bbdbd443768eb5744a75ce44a4c')
+      var s2 = new Script('0x47 0x3044022017053dad84aa06213749df50a03330cfd24d6b8e7ddbb6de66c03697b78a752a022053bc0faca8b4049fb3944a05fcf7c93b2861734d39a89b73108f605f70f5ed3401 33 0x0225386e988b84248dc9c30f784b06e02fdec57bbdbd443768eb5744a75ce44a4c')
       s2.toAddress().toString().should.equal('17VArX6GRE6i6MVscBUZoXwi6NhnHa68B7')
     })
 
@@ -1221,7 +1224,7 @@ describe('Script', function () {
       Script().getSignatureOperationsCount(true).should.equal(0)
     })
     it('should handle multi-sig multisig scripts from string', function () {
-      var s1 = 'OP_1 01 FF OP_2 OP_CHECKMULTISIG'
+      var s1 = 'OP_1 01 0xFF OP_2 OP_CHECKMULTISIG'
       Script(s1).getSignatureOperationsCount(true).should.equal(2)
       s1 += ' OP_IF OP_CHECKSIG OP_ENDIF'
       Script(s1).getSignatureOperationsCount(true).should.equal(3)
@@ -1242,7 +1245,7 @@ describe('Script', function () {
       p2sh.getSignatureOperationsCount(false).should.equal(0)
     })
     it('should default the one and only argument to true', function () {
-      var s1 = 'OP_1 01 FF OP_2 OP_CHECKMULTISIG'
+      var s1 = 'OP_1 01 0xFF OP_2 OP_CHECKMULTISIG'
       var trueCount = Script(s1).getSignatureOperationsCount(true)
       var falseCount = Script(s1).getSignatureOperationsCount(false)
       var defaultCount = Script(s1).getSignatureOperationsCount()

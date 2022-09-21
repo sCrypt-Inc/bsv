@@ -248,7 +248,7 @@ describe('BufferReader', function () {
     })
 
     it('should read a 9 byte varint', function () {
-      var buf = BufferWriter().writeVarintBN(new BN(Math.pow(2, 54).toString())).concat()
+      var buf = new BufferWriter().writeVarintBN(new BN(Math.pow(2, 54).toString())).concat()
       var br = new BufferReader(buf)
       br.readVarintBuf().length.should.equal(9)
     })
@@ -275,7 +275,7 @@ describe('BufferReader', function () {
     })
 
     it('should throw an error on a 9 byte varint over the javascript uint precision limit', function () {
-      var buf = BufferWriter().writeVarintBN(new BN(Math.pow(2, 54).toString())).concat()
+      var buf = new BufferWriter().writeVarintBN(new BN(Math.pow(2, 54).toString())).concat()
       var br = new BufferReader(buf);
       (function () {
         br.readVarintNum()
@@ -283,7 +283,7 @@ describe('BufferReader', function () {
     })
 
     it('should not throw an error on a 9 byte varint not over the javascript uint precision limit', function () {
-      var buf = BufferWriter().writeVarintBN(new BN(Math.pow(2, 53).toString())).concat()
+      var buf = new BufferWriter().writeVarintBN(new BN(Math.pow(2, 53).toString())).concat()
       var br = new BufferReader(buf);
       (function () {
         br.readVarintNum()

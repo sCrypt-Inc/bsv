@@ -107,8 +107,8 @@ describe('Output', function () {
   var output2 = new Output({
     satoshis: 1100000000,
     script: new Script(
-      'OP_2 21 0x038282263212c609d9ea2a6e3e172de238d8c39' +
-        'cabd5ac1ca10646e23fd5f51508 21 0x038282263212c609d9ea2a6e3e172de23' +
+      'OP_2 33 0x038282263212c609d9ea2a6e3e172de238d8c39' +
+        'cabd5ac1ca10646e23fd5f51508 33 0x038282263212c609d9ea2a6e3e172de23' +
         '8d8c39cabd5ac1ca10646e23fd5f51508 OP_2 OP_CHECKMULTISIG OP_EQUAL'
     )
   })
@@ -119,8 +119,8 @@ describe('Output', function () {
       .toBuffer()
       .toString('hex')
       .should.equal(
-        '00ab904100000000485215038282263212c609d9ea2a6e3e172de2' +
-          '38d8c39cabd5ac1ca10646e23fd5f5150815038282263212c609d9ea2a6e3e172d' +
+        '00ab904100000000485221038282263212c609d9ea2a6e3e172de2' +
+          '38d8c39cabd5ac1ca10646e23fd5f5150821038282263212c609d9ea2a6e3e172d' +
           'e238d8c39cabd5ac1ca10646e23fd5f5150852ae87'
       )
   })
@@ -153,15 +153,15 @@ describe('Output', function () {
     var br = new bsv.encoding.BufferReader(invalidOutputScript)
     var output = Output.fromBufferReader(br)
     var output2 = new Output(output.toObject())
-    should.equal(output2.script, null)
-    should.equal(output2._scriptBuffer.toString('hex'), '4c')
+    should.equal(output2.script.toString('hex'), output.script.toString('hex'))
+    should.equal(output2.script.toHex(), '4c')
   })
 
   it('inspect will work with an invalid (null) script', function () {
     var invalidOutputScript = Buffer.from('0100000000000000014c', 'hex')
     var br = new bsv.encoding.BufferReader(invalidOutputScript)
     var output = Output.fromBufferReader(br)
-    output.inspect().should.equal('<Output (1 sats) 4c>')
+    output.inspect().should.equal('<Output (1 sats) <Script: OP_PUSHDATA1>>')
   })
 
   it('roundtrips to/from JSON', function () {
@@ -175,11 +175,11 @@ describe('Output', function () {
     out.setScript.bind(out, 45).should.throw('Invalid argument type: script')
   })
 
-  it('sets script to null if it is an InvalidBuffer', function () {
+  it('sets script not null if it is an InvalidBuffer', function () {
     var output = new Output({
       satoshis: 1000,
       script: Buffer.from('4c', 'hex')
     })
-    should.equal(output.script, null)
+    should.equal(output.script.toString(), 'OP_PUSHDATA1')
   })
 })

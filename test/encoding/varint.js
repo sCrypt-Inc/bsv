@@ -35,7 +35,7 @@ describe('Varint', function () {
 
   describe('#fromString', function () {
     it('should set a buffer', function () {
-      var buf = BufferWriter().writeVarintNum(5).concat()
+      var buf = new BufferWriter().writeVarintNum(5).concat()
       var varint = Varint().fromString(buf.toString('hex'))
       varint.toNumber().should.equal(5)
     })
@@ -43,7 +43,7 @@ describe('Varint', function () {
 
   describe('#toString', function () {
     it('should return a buffer', function () {
-      var buf = BufferWriter().writeVarintNum(5).concat()
+      var buf = new BufferWriter().writeVarintNum(5).concat()
       var varint = Varint().fromString(buf.toString('hex'))
       varint.toString().should.equal('05')
     })
@@ -51,7 +51,7 @@ describe('Varint', function () {
 
   describe('#fromBuffer', function () {
     it('should set a buffer', function () {
-      var buf = BufferWriter().writeVarintNum(5).concat()
+      var buf = new BufferWriter().writeVarintNum(5).concat()
       var varint = Varint().fromBuffer(buf)
       varint.toNumber().should.equal(5)
     })
@@ -59,7 +59,7 @@ describe('Varint', function () {
 
   describe('#fromBufferReader', function () {
     it('should set a buffer reader', function () {
-      var buf = BufferWriter().writeVarintNum(5).concat()
+      var buf = new BufferWriter().writeVarintNum(5).concat()
       var br = BufferReader(buf)
       var varint = Varint().fromBufferReader(br)
       varint.toNumber().should.equal(5)
@@ -82,7 +82,7 @@ describe('Varint', function () {
 
   describe('#toBuffer', function () {
     it('should return a buffer', function () {
-      var buf = BufferWriter().writeVarintNum(5).concat()
+      var buf = new BufferWriter().writeVarintNum(5).concat()
       var varint = Varint(buf)
       varint.toBuffer().toString('hex').should.equal(buf.toString('hex'))
     })

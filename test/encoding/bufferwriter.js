@@ -2,6 +2,7 @@
 
 var bsv = require('../..')
 var should = require('chai').should()
+var expect = require('chai').expect
 var BufferWriter = bsv.encoding.BufferWriter
 var BufferReader = bsv.encoding.BufferReader
 var BN = bsv.crypto.BN
@@ -122,13 +123,22 @@ describe('BufferWriter', function () {
       bw.concat().length.should.equal(9)
     })
 
-    it('should read back the same value it wrote for a 9 byte varint', function () {
+    it('should read back the same value it wrote for a 8 byte varint', function () {
       var bw = new BufferWriter()
       var n = Math.pow(2, 53)
       n.should.equal(n + 1) // javascript number precision limit
-      bw.writeVarintNum(n)
+      bw.writeVarintNum(n - 1)
       var br = new BufferReader({ buf: bw.concat() })
-      br.readVarintBN().toNumber().should.equal(n)
+      br.readVarintBN().toNumber().should.equal(n - 1)
+    })
+
+    it('should throw for a 9 byte varint', function () {
+      expect(function () {
+        var bw = new BufferWriter()
+        var n = Math.pow(2, 53)
+        n.should.equal(n + 1) // javascript number precision limit
+        bw.writeVarintNum(n)
+      }).to.throw('varint too large')
     })
   })
 
