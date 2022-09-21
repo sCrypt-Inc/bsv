@@ -7,6 +7,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
+    "dev": "mocha -g 'Address' ",
     "test": "standard && mocha",
     "coverage": "nyc --reporter=text npm run test",
     "build-bsv": "webpack index.js --config webpack.config.js",
