@@ -1,5 +1,9 @@
 language: node_js
-node_js:
-- '10'
-install:
-  - npm install
+node_js: 
+  - 14
+
+
+jobs:
+  include:
+    script:
+        - npm t
