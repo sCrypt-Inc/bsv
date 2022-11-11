@@ -57,7 +57,7 @@ bsv.Transaction = require('./lib/transaction')
 
 // dependencies, subject to change
 bsv.deps = {}
-bsv.deps.bnjs = require('bn.js')
+bsv.deps.bnjs = require('./lib/bn')
 bsv.deps.bs58 = require('bs58')
 bsv.deps.Buffer = Buffer
 bsv.deps.elliptic = require('elliptic')
