@@ -436,8 +436,8 @@ declare module 'bsv' {
         applySignature(sig: crypto.Signature): this;
         addInput(
             input: Transaction.Input,
-            outputScript: Script | string,
-            satoshis: number
+            outputScript?: Script | string,
+            satoshis?: number
         ): this;
         addOutput(output: Transaction.Output): this;
         addData(value: Buffer | string): this;
@@ -510,7 +510,7 @@ declare module 'bsv' {
         readonly compressed: boolean;
         readonly network: Networks.Network;
 
-        toAddress(network: Networks.Type): Address;
+        toAddress(network?: Networks.Type): Address;
         toPublicKey(): PublicKey;
         toString(): string;
         toObject(): object;
