@@ -261,6 +261,7 @@ declare module 'bsv' {
             toSM(opts?: IOpts): Buffer;
             toNumber(): number;
             static fromBuffer(buf: Buffer, opts?: IOpts): BN;
+            static fromNumber(n: number): BN;
             //toBuffer(opts?: IOpts): Buffer;
             static fromHex(hex: string, opts?: IOpts): BN;
             static fromString(hex: string, base?: number): BN;
@@ -311,10 +312,12 @@ declare module 'bsv' {
             static SIGHASH_SINGLE: number;
             static SIGHASH_FORKID: number;
             static SIGHASH_ANYONECANPAY: number;
+            nhashtype: number;
             toString(): string;
             toBuffer(): Buffer;
             toDER(): Buffer;
-            isTxDER(buf: Buffer): boolean;
+            hasDefinedHashtype(): boolean;
+            static isTxDER(buf: Buffer): boolean;
             hasLowS(): boolean;
             toTxFormat(): Buffer;
         }
@@ -347,7 +350,7 @@ declare module 'bsv' {
             inspect(): string;
             toObject(): { satoshis: number; script: string };
             getSize(): number;
-            toBufferWriter(writer: encoding.BufferWriter): encoding.BufferWriter;
+            toBufferWriter(writer?: encoding.BufferWriter): encoding.BufferWriter;
         }
 
         class Input {
@@ -360,6 +363,16 @@ declare module 'bsv' {
             isValidSignature(tx: Transaction, sig: any): boolean;
             setScript(script: Script): this;
         }
+
+
+        namespace Input {
+            class PublicKeyHash extends Input {
+            
+            }
+        }
+
+
+
 
         class Signature {
             constructor(arg: Signature | string | object);
@@ -434,6 +447,7 @@ declare module 'bsv' {
             sigtype?: number
         ): this;
         applySignature(sig: crypto.Signature): this;
+        verifySignature(sig: crypto.Signature, pubkey: PublicKey, nin: number, subscript: Script, satoshisBN: crypto.BN, flags: number): boolean;
         addInput(
             input: Transaction.Input,
             outputScript?: Script | string,
