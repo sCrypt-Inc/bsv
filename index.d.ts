@@ -484,7 +484,12 @@ declare module 'bsv' {
         _getUnspentValue(): number;
         _estimateFee(): number;
         _estimateSize: number;
-        setInputScript(inputIndex: number, unlockingScript: Script | ((tx: Transaction, output: Transaction.Output) => Script)): Transaction;
+        setInputScript(inputIndex: number | {
+            inputIndex: number,
+            privateKey?: PrivateKey,
+            sigtype?: number,
+            isLowS?: boolean
+        }, unlockingScript: Script | ((tx: Transaction, outputInPrevTx: Transaction.Output, preimage: string, signature: string) => Script)): Transaction;
         setInputSequence(inputIndex: number, sequence: number): Transaction;
         setOutput(outputIndex: number, output: Transaction.Output | ((tx: Transaction) => Transaction.Output));
         seal(): void;
@@ -779,6 +784,7 @@ declare module 'bsv' {
             static MAX_SCRIPT_ELEMENT_SIZE: number;
             static MAXIMUM_ELEMENT_SIZE: number;
             static SCRIPT_VERIFY_CLEANSTACK: number;
+            static DEFAULT_FLAGS: number;
             stepListener?: Interpreter.StepListenerFunction;
             errstr?: string;
             verify: (
