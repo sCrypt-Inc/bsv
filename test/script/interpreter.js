@@ -682,7 +682,7 @@ describe('Interpreter', function () {
               allInputsVerified = false
             }
           })
-          var txVerified = tx.verify()
+          var txVerified = tx.verify(true)
           txVerified = (txVerified === true)
           allInputsVerified = allInputsVerified && txVerified
           allInputsVerified.should.equal(expected)
