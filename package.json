@@ -6,7 +6,7 @@
   "ide": true,
   "main": "index.js",
   "scripts": {
-    "lint": "standard",
+    "lint": "standard --fix",
     "dev": "mocha -g 'Address' ",
     "test": "standard && mocha",
     "coverage": "nyc --reporter=text npm run test",
