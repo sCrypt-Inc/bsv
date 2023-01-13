@@ -503,10 +503,17 @@ declare module 'bsv' {
             privateKey?: PrivateKey | Array<PrivateKey>,
             sigtype?: number,
             isLowS?: boolean
-        }, unlockingScript: Script | ((tx: Transaction, outputInPrevTx: Transaction.Output) => Script)): this;
+        }, unlockingScript: Script | ((tx: Transaction, outputInPrevTx: Transaction.Output) => Script )): this;
+        setInputScriptAsync(inputIndex: number | {
+            inputIndex: number,
+            privateKey?: PrivateKey | Array<PrivateKey>,
+            sigtype?: number,
+            isLowS?: boolean
+        }, unlockingScript: Script | ((tx: Transaction, outputInPrevTx: Transaction.Output) => Promise<Script>)): Promise<this>;
         setInputSequence(inputIndex: number, sequence: number): this;
         setOutput(outputIndex: number, output: Transaction.Output | ((tx: Transaction) => Transaction.Output)): this;
         seal(): this;
+        sealAsync(): Promise<this>;
         isSealed(): boolean;
         getChangeAmount(): number;
         getEstimateFee(): number;
