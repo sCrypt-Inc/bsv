@@ -491,7 +491,7 @@ describe('Transaction', function () {
     it('fails if a dust output is created', function () {
       var transaction = new Transaction()
         .from(simpleUtxoWith1BSV)
-        .to(toAddress, 545)
+        .to(toAddress, 0)
         .change(changeAddress)
         .sign(privateKey)
       expect(function () {
@@ -583,7 +583,7 @@ describe('Transaction', function () {
       it('can skip the check that prevents dust outputs', buildSkipTest(
         function (transaction) {
           return transaction
-            .to(toAddress, 100)
+            .to(toAddress, 0)
             .change(changeAddress)
             .sign(privateKey)
         }, 'disableDustOutputs', errors.Transaction.DustOutputs
