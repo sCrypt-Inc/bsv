@@ -209,6 +209,9 @@ declare module 'bsv' {
                 base?: number,
                 endian?: Endianness,
             );
+
+            One: BN;
+
             clone(): BN;
             toString(base?: number | 'hex', length?: number): string;
             toNumber(): number;
@@ -456,6 +459,8 @@ declare module 'bsv' {
         from(
             utxos: Transaction.IUnspentOutput | Transaction.IUnspentOutput[]
         ): this;
+        fromString(rawTxHex: string): this;
+        fromBuffer(buffer: Buffer): this;
         to(address: Address[] | Address | string, amount: number): this;
         change(address: Address | string): this;
         fee(amount: number): this;
@@ -464,7 +469,7 @@ declare module 'bsv' {
             privateKey: PrivateKey[] | string[] | PrivateKey | string,
             sigtype?: number
         ): this;
-        applySignature(sig: {inputIndex: number, sigtype: number, publicKey: PublicKey, signature: crypto.Signature}): this;
+        applySignature(sig: { inputIndex: number, sigtype: number, publicKey: PublicKey, signature: crypto.Signature}): this;
         verifySignature(sig: crypto.Signature, pubkey: PublicKey, nin: number, subscript: Script, satoshisBN: crypto.BN, flags: number): boolean;
         addInput(
             input: Transaction.Input,
@@ -507,7 +512,7 @@ declare module 'bsv' {
             privateKey?: PrivateKey | Array<PrivateKey>,
             sigtype?: number,
             isLowS?: boolean
-        }, unlockingScript: Script | ((tx: Transaction, outputInPrevTx: Transaction.Output) => Script )): this;
+        }, unlockingScript: Script | ((tx: Transaction, outputInPrevTx: Transaction.Output) => Script)): this;
         setInputScriptAsync(inputIndex: number | {
             inputIndex: number,
             sigtype?: number,
