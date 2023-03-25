@@ -172,7 +172,7 @@ declare module 'bsv' {
             readVarintBuf(): Buffer;
             readVarintBN(): crypto.BN;
             reverse(): this;
-            readReverse(len: number): Buffer;
+            readReverse(len?: number): Buffer;
             readAll(): Buffer;
             eof(): boolean;
             remaining(): number;
