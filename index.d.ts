@@ -937,7 +937,7 @@ declare module 'bsv' {
         function remove(network: Networks.Type): void;
         function get(
             args: string | number | Networks.Type,
-            keys: string | string[]
+            keys?: string | string[]
         ): Network;
     }
 
