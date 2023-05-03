@@ -283,7 +283,7 @@ describe('Transaction', function () {
         .change(changeAddress)
         .sign(privateKey)
       // update if change default FEE_PER_KB
-      transaction.serialize().should.equal('01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006b483045022100c2de1b500fd06d9c9db1139e1d6e718e03889eade84fe905ab3b711d376d2dad02203643918efa39299f6df57bd3ae2d0925183de5ef651783dcf97752d2533387a841210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff02000000000000000014006a1167656e6573697320697320636f6d696e6794860100000000001976a914073b7eae2823efa349e3b9155b8a735526463a0f88ac00000000')
+      transaction.serialize().should.equal('01000000015884e5db9de218238671572340b207ee85b628074e7e467096c267266baf77a4000000006b483045022100ee3873c972724528c4822bae245722436f03b06995037aa566c2ddf9d4c36a3c02201f7265691b338d15f28ecc9d600f09326a4136be9dfaaa8c7cbed7e0d907c51241210223078d2942df62c45621d209fab84ea9a7a23346201b7727b9b45a29c4e76f5effffffff02000000000000000014006a1167656e6573697320697320636f6d696e6793860100000000001976a914073b7eae2823efa349e3b9155b8a735526463a0f88ac00000000')
     })
 
     describe('isFullySigned', function () {
@@ -334,7 +334,7 @@ describe('Transaction', function () {
         .feePerKb(100000)
 
       transaction.outputs.length.should.equal(2)
-      transaction.outputs[1].satoshis.should.equal(477400)
+      transaction.outputs[1].satoshis.should.equal(474200)
       transaction.outputs[1].script.toString()
         .should.equal(Script.fromAddress(changeAddress).toString())
       var actual = transaction.getChangeOutput().script.toString()
@@ -408,7 +408,7 @@ describe('Transaction', function () {
         .sign(privateKey)
       transaction._estimateSize().should.be.within(1000, 1999)
       transaction.outputs.length.should.equal(2)
-      transaction.outputs[1].satoshis.should.equal(37536)
+      transaction.outputs[1].satoshis.should.equal(34976)
     })
     it('if satoshis are invalid', function () {
       var transaction = new Transaction()
@@ -939,7 +939,7 @@ describe('Transaction', function () {
         .to(toAddress, 1000)
         .feePerKb(100000)
       transaction.inputAmount.should.equal(100000000)
-      transaction.outputAmount.should.equal(99977400)
+      transaction.outputAmount.should.equal(99974200)
     })
     it('returns correct values for coinjoin transaction', function () {
       // see livenet tx c16467eea05f1f30d50ed6dbc06a38539d9bb15110e4b7dc6653046a3678a718
@@ -1037,7 +1037,7 @@ describe('Transaction', function () {
       tx.outputs.length.should.equal(2)
       tx.outputs[0].satoshis.should.equal(10000000)
       tx.outputs[0].script.toAddress().toString().should.equal(toAddress)
-      tx.outputs[1].satoshis.should.equal(89977400)
+      tx.outputs[1].satoshis.should.equal(89974200)
       tx.outputs[1].script.toAddress().toString().should.equal(changeAddress)
     })
   })
