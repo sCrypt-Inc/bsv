@@ -54,6 +54,7 @@ bsv.PrivateKey = require('./lib/privatekey')
 bsv.PublicKey = require('./lib/publickey')
 bsv.Script = require('./lib/script')
 bsv.Transaction = require('./lib/transaction')
+bsv.ECIES = require('./lib/ecies')
 
 // dependencies, subject to change
 bsv.deps = {}
