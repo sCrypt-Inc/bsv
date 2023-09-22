@@ -58,7 +58,7 @@ bsv.ECIES = require('./lib/ecies')
 
 // dependencies, subject to change
 bsv.deps = {}
-bsv.deps.bnjs = require('./lib/bn')
+bsv.deps.bnjs = require('./lib/bn.js')
 bsv.deps.bs58 = require('bs58')
 bsv.deps.Buffer = Buffer
 bsv.deps.elliptic = require('elliptic')
