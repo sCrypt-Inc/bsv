@@ -6,6 +6,8 @@
 // Definitions extended by: David Case <https://github.com/shruggr>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
+import HashCache from "./lib/hash-cache";
+
 // TypeScript Version: 3.0
 
 /// <reference types="node" />
@@ -226,14 +228,14 @@ declare module 'bsv' {
          */
         static OP_16: number;
 
-         /** 
-         * Does nothing.
-         * @opcode {`97`} 
-         * @hex {`0x61`} 
-         * @input Nothing
-         * @output Nothing
-         * @static
-         */
+        /** 
+        * Does nothing.
+        * @opcode {`97`} 
+        * @hex {`0x61`} 
+        * @input Nothing
+        * @output Nothing
+        * @static
+        */
         static OP_NOP: number;
 
         /**
@@ -865,7 +867,8 @@ declare module 'bsv' {
                 inputNumber: number,
                 subscript: Script,
                 satoshisBN: crypto.BN,
-                flags?: number
+                flags?: number,
+                hashCache?: HashCache
             ): Buffer;
             function sighash(
                 transaction: Transaction,
@@ -873,7 +876,8 @@ declare module 'bsv' {
                 inputNumber: number,
                 subscript: Script,
                 satoshisBN: crypto.BN,
-                flags?: number
+                flags?: number,
+                hashCache?: HashCache
             ): Buffer;
             function sign(
                 transaction: Transaction,
@@ -882,7 +886,8 @@ declare module 'bsv' {
                 inputIndex: number,
                 subscript: Script,
                 satoshisBN: crypto.BN,
-                flags?: number
+                flags?: number,
+                hashCache?: HashCache
             ): crypto.Signature;
             function verify(
                 transaction: Transaction,
@@ -891,7 +896,8 @@ declare module 'bsv' {
                 inputIndex: number,
                 subscript: Script,
                 satoshisBN: crypto.BN,
-                flags?: number
+                flags?: number,
+                hashCache?: HashCache
             ): boolean;
         }
     }
@@ -922,7 +928,7 @@ declare module 'bsv' {
             privateKey: PrivateKey[] | string[] | PrivateKey | string,
             sigtype?: number
         ): this;
-        applySignature(sig: { inputIndex: number, sigtype: number, publicKey: PublicKey, signature: crypto.Signature}): this;
+        applySignature(sig: { inputIndex: number, sigtype: number, publicKey: PublicKey, signature: crypto.Signature }): this;
         verifySignature(sig: crypto.Signature, pubkey: PublicKey, nin: number, subscript: Script, satoshisBN: crypto.BN, flags: number): boolean;
         addInput(
             input: Transaction.Input,
@@ -938,7 +944,7 @@ declare module 'bsv' {
         hasWitnesses(): boolean;
         getFee(): number;
         getChangeOutput(): Transaction.Output | null;
-        getChangeAddress(): Address | null;        
+        getChangeAddress(): Address | null;
         getLockTime(): Date | number;
         setLockTime(t: number): this;
 
@@ -995,7 +1001,7 @@ declare module 'bsv' {
             error: string,
             failedAt: any
         };
-        verifyScript(inputIndex: number):  {
+        verifyScript(inputIndex: number): {
             success: boolean,
             error: string,
             failedAt: any
@@ -1477,5 +1483,21 @@ declare module 'bsv' {
             hashes: Array<string>;
             flags: Array<number>;
         };
+    }
+
+    export class HashCache {
+        constructor(
+            prevoutsHashBuf: Buffer,
+            sequenceHashBuf: Buffer,
+            outputsHashBuf: Buffer
+        )
+
+        static fromBuffer(buf: Buffer): HashCache
+        static fromJSON(json: object): HashCache
+        static fromHex(hex: string): HashCache
+        
+        toBuffer(): HashCache
+        toJSON(): HashCache
+        toHex(): HashCache
     }
 }
