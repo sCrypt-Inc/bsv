@@ -72,4 +72,4 @@ bsv.Message = require('./lib/message/message')
 bsv.Mnemonic = require('./lib/mnemonic/mnemonic')
 
 module.exports = bsv
-export default bsv
+// export default bsv
