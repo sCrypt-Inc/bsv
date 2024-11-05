@@ -1,0 +1,36 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install yarn
+        run: npm i -g yarn
+      
+      - name: Yarn Install
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Test
+        run: |
+          yarn test
+          cd esmTest
+          yarn
+          yarn test
