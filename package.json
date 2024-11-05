@@ -5,7 +5,6 @@
   "author": "sCrypt.Inc",
   "source": "./index.js",
   "main": "dist/main.js",
-  "module": "dist/module.js",
   "browser": "dist/browser.js",
   "types": "./index.d.ts",
   "scripts": {
