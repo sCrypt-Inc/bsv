@@ -8,6 +8,8 @@ jobs:
     script:
         - npm run build
         - npm t
+        - cd esmTest && npm i
+        - npm t
 
 notifications:
   slack:

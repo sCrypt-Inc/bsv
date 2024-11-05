@@ -1,11 +1,10 @@
 {
   "name": "@scrypt-inc/bsv",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A pure and powerful JavaScript Bitcoin SV (BSV) library.",
   "author": "sCrypt.Inc",
   "source": "./index.js",
   "main": "dist/main.js",
-  "module": "dist/module.js",
   "browser": "dist/browser.js",
   "types": "./index.d.ts",
   "scripts": {

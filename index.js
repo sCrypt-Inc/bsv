@@ -7,7 +7,7 @@ bsv.version = 'v' + require('./package.json').version
 bsv.versionGuard = function (version) {
   if (version !== undefined) {
     var message = `
-      More than one instance of bsv found.
+      More than one instance of scrypt bsv found. other version: ${version}
       Please make sure to require bsv and check that submodules do
       not also include their own bsv dependency.`
     console.warn(message)
