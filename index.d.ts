@@ -9,6 +9,7 @@
 // TypeScript Version: 3.0
 
 /// <reference types="node" />
+type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 declare module '@scrypt-inc/bsv' {
     /**
@@ -791,12 +792,13 @@ declare module '@scrypt-inc/bsv' {
     }
 
     export namespace Transaction {
-        interface IUnspentOutput {
+        export interface IUnspentOutput {
             address?: string;
             txId: string;
             outputIndex: number;
             script: string;
             satoshis: number;
+            data: string;
         }
         class UnspentOutput {
             static fromObject(o: IUnspentOutput): UnspentOutput;
@@ -806,35 +808,58 @@ declare module '@scrypt-inc/bsv' {
             toString(): string;
         }
 
+        export interface IOutput {
+            script: string;
+            satoshis: number;
+            data: string;
+        }
         class Output {
             readonly script: Script;
             readonly satoshis: number;
             readonly satoshisBN: crypto.BN;
+            readonly data: Buffer;
             spentTxId: string | null;
-            constructor(data: {
-                script: Script,
-                satoshis: number
-            });
+            constructor(data: IOutput);
 
             setScript(script: Script | string | Buffer): this;
             inspect(): string;
-            toObject(): { satoshis: number; script: string };
+            toObject(): IOutput;
             getSize(): number;
             toBufferWriter(writer?: encoding.BufferWriter): encoding.BufferWriter;
+            toTxHashPreimageWriter(writer?: encoding.BufferWriter): encoding.BufferWriter;
             static fromBufferReader(reader: encoding.BufferReader): Output
         }
 
+        export interface ISig {
+            sigHashType?: number;
+            publicKey: string;
+            address: string;
+            signature: string;
+        }
+
+        export interface IInput {
+            prevTxId: string;
+            outputIndex: number;
+            sequenceNumber: number;
+            script?: string;
+            output?: IOutput;
+            sigs?: ISig[];
+        }
         class Input {
             readonly prevTxId: Buffer;
             readonly outputIndex: number;
             sequenceNumber: number;
             readonly script: Script;
             output?: Output;
-            constructor(params: object);
+            sigs?: ISig[];
+            constructor(params: Optional<IInput, 'sequenceNumber'>);
             isValidSignature(tx: Transaction, sig: any): boolean;
             setScript(script: Script): this;
             getSignatures(tx: Transaction, privateKey: PrivateKey, inputIndex: number, sigtype?: number): any;
             getPreimage(tx: Transaction, inputIndex: number, sigtype?: number, isLowS?: boolean, csIdx?: number): any;
+            toTxHashPreimageWriter(writer?: encoding.BufferWriter): encoding.BufferWriter;
+            toPrevout(): Buffer;
+            toObject(): IInput;
         }
 
 
@@ -863,8 +888,10 @@ declare module '@scrypt-inc/bsv' {
                 transaction: Transaction,
                 sighashType: number,
                 inputNumber: number,
-                subscript: Script,
-                satoshisBN: crypto.BN,
+
+                // todo: remove these
+                subscript?: Script,
+                satoshisBN?: crypto.BN,
                 flags?: number,
                 hashCache?: HashCache
             ): Buffer;
@@ -872,8 +899,10 @@ declare module '@scrypt-inc/bsv' {
                 transaction: Transaction,
                 sighashType: number,
                 inputNumber: number,
-                subscript: Script,
-                satoshisBN: crypto.BN,
+
+                // todo: remove these   
+                subscript?: Script,
+                satoshisBN?: crypto.BN,
                 flags?: number,
                 hashCache?: HashCache
             ): Buffer;
@@ -882,8 +911,10 @@ declare module '@scrypt-inc/bsv' {
                 privateKey: PrivateKey,
                 sighashType: number,
                 inputIndex: number,
-                subscript: Script,
-                satoshisBN: crypto.BN,
+
+                // todo: remove these
+                subscript?: Script,
+                satoshisBN?: crypto.BN,
                 flags?: number,
                 hashCache?: HashCache
             ): crypto.Signature;
@@ -892,12 +923,23 @@ declare module '@scrypt-inc/bsv' {
                 signature: Signature,
                 publicKey: PublicKey,
                 inputIndex: number,
-                subscript: Script,
-                satoshisBN: crypto.BN,
+
+                // todo: remove these
+                subscript?: Script,
+                satoshisBN?: crypto.BN,
                 flags?: number,
                 hashCache?: HashCache
             ): boolean;
         }
+    }
+
+    export interface ITransaction {
+        version: number;
+        nLockTime: number;
+        inputs: IInput[];
+        outputs: IOutput[];
+
+        // todo: should I add changeScript, changeIndex, fee fields
     }
 
     export class Transaction {
@@ -913,11 +955,16 @@ declare module '@scrypt-inc/bsv' {
 
         constructor(raw?: string);
 
+        static fromString(rawTxHex: string): Transaction;
+        static fromBuffer(buffer: Buffer): Transaction;
+        static fromObject(obj: ITransaction): Transaction;
+
         from(
             utxos: Transaction.IUnspentOutput | Transaction.IUnspentOutput[]
         ): this;
         fromString(rawTxHex: string): this;
         fromBuffer(buffer: Buffer): this;
+        fromObject(obj: ITransaction): this;
         to(address: Address[] | Address | string, amount: number): this;
         change(address: Address | string): this;
         fee(amount: number): this;
@@ -956,8 +1003,9 @@ declare module '@scrypt-inc/bsv' {
         serialize(opts?: object): string;
         uncheckedSerialize(): string;
 
-        toObject(): any;
+        toObject(): ITransaction;
         toBuffer(): Buffer;
+        toTxHashPreimageBuffer(): Buffer;
 
         isFullySigned(): boolean;
 
