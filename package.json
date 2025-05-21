@@ -9,7 +9,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "lint": "standard --fix",
-    "build": "parcel build --no-cache",
+    "build": "npx -y rimraf dist && parcel build --no-cache && node copyLib.js",
     "dev": "mocha -g 'BIP32' ",
     "test": "standard && mocha",
     "coverage": "nyc --reporter=text npm run test",

@@ -637,8 +637,8 @@ declare module '@scrypt-inc/bsv' {
             writeUInt32BE(n: number): this;
             writeUInt32LE(n: number): this;
             writeInt32LE(n: number): this;
-            writeUInt64BEBN(n: number): this;
-            writeUInt64LEBN(n: number): this;
+            writeUInt64BEBN(n: crypto.BN): this;
+            writeUInt64LEBN(n: crypto.BN): this;
             writeVarintNum(n: number): this;
             writeVarintBN(n: crypto.BN): this;
             writeReverse(buf: Buffer): this;
@@ -936,8 +936,8 @@ declare module '@scrypt-inc/bsv' {
     export interface ITransaction {
         version: number;
         nLockTime: number;
-        inputs: IInput[];
-        outputs: IOutput[];
+        inputs: Transaction.Input[];
+        outputs: Transaction.Output[];
 
         // todo: should I add changeScript, changeIndex, fee fields
     }
@@ -966,7 +966,7 @@ declare module '@scrypt-inc/bsv' {
         fromBuffer(buffer: Buffer): this;
         fromObject(obj: ITransaction): this;
         to(address: Address[] | Address | string, amount: number): this;
-        change(address: Address | string): this;
+        change(address: Address | string, data?: Buffer | string): this;
         fee(amount: number): this;
         feePerKb(amount: number): this;
         sign(
@@ -1355,7 +1355,7 @@ declare module '@scrypt-inc/bsv' {
     }
 
     export class Script {
-        constructor(data: string | object);
+        constructor(data?: string | object);
 
         chunks: Array<Script.IOpChunk>;
         length: number;
@@ -1470,6 +1470,7 @@ declare module '@scrypt-inc/bsv' {
             hash: Buffer | Uint8Array,
             network?: Networks.Type
         ): Address;
+        static fromScript(script: Script, network?: Networks.Type): Address;
         isValid(
             data: Buffer | Uint8Array | string | object,
             network?: Networks.Type | string,
@@ -1545,5 +1546,16 @@ declare module '@scrypt-inc/bsv' {
         toBuffer(): HashCache
         toJSON(): HashCache
         toHex(): HashCache
+    }
+
+    export namespace util {
+        export class js {
+            static isValidJSON(arg: string): boolean;
+            static isHexa(value: string): boolean;
+            static isHexaString(value: string): boolean;
+            static defineImmutable(target: object, values: object): object;
+            static isNaturalNumber(value: number): boolean;
+            static integerAsBuffer(integer: number): Buffer;
+        }
     }
 }
